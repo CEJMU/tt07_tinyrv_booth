@@ -60,7 +60,7 @@ process (clk, reset) begin
             -- write_adress_counter <= 15;
             data_reg             <= (others => '0');
             write_adress_counter <= 16;         -- first bit: 0 -> read mode || 1 -> write mode
-            read_adress_counter  <= 34;
+            read_adress_counter  <= 33;
             data_valid           <= '0';
             if (cs = '0') then
                 currstate      <= send_adress;
