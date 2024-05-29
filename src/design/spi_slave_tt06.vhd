@@ -15,9 +15,9 @@ entity spi_slave_tt06 is
         miso : out std_logic;
         cs   : in std_logic; -- needed for one clk cycle
 
-        data_to_memory   : out std_logic_vector(31 downto 0) := (others => '0');
-        addr_to_memory   : out std_logic_vector(15 downto 0) := (others => '0');
-        data_from_memory : in std_logic_vector(31 downto 0)  := (others => '0');
+        data_to_memory   : out std_logic_vector(31 downto 0);
+        addr_to_memory   : out std_logic_vector(15 downto 0);
+        data_from_memory : in std_logic_vector(31 downto 0);
 
         --addr_read          : out std_logic := '0';
         --data_written       : out std_logic := '0';
@@ -57,7 +57,7 @@ begin
                 mode_select_zw       <= '0';
                 data_to_memory       <= (others => '0');
                 write_adress_counter <= 16;
-                data_counter         <= 33;
+                data_counter         <= 34;
                 --addr_read            <= '0';
                 addr_to_memory       <= (others => '0');
                 data_to_master       <= (others => '0');
