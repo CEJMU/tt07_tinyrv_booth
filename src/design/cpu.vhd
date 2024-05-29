@@ -72,7 +72,7 @@ begin
       iword_reg <= (others => '0');
     elsif rising_edge(clk) then
       if fetchflag = '1' then
-        iword_reg <= data_in;
+        iword_reg <= data_in(7 downto 0) & data_in(15 downto 8) & data_in(23 downto 16) & data_in(31 downto 24); -- conversion to little endian
       end if;
     end if;
   end process;
@@ -122,7 +122,7 @@ begin
     rs2;
 
   rd <= x"0000" & pc_inc when control_flags_out(4) = '1' else
-    data_in when control_flags_out(0) = '1'
+    data_in(7 downto 0) & data_in(15 downto 8) & data_in(23 downto 16) & data_in(31 downto 24) when control_flags_out(0) = '1'
     else rdAlu;
 
   s0 <= rdAlu(16) when control_flags_out(4) = '1'
@@ -130,7 +130,7 @@ begin
   s1 <= rdAlu(17) when control_flags_out(4) = '1'
     else '1';
 
-  data_out <= rs2;
+  data_out <= rs2(7 downto 0) & rs2(15 downto 8) & rs2(23 downto 16) & rs2(31 downto 24);
 
   instruction_inst : entity work.instructioncounter(rtl)
     port map (

@@ -44,46 +44,7 @@ architecture rtl of spi_master is
     signal currstate : states;
 begin
 
-    -- SCLK Generator
-
---     process (clk, reset)
---         constant sclk_modif   : integer := 3; -- To modify sclk : sclk = sclk_modify * clk_period/2
---         variable sclk_counter : integer := 0;
---     begin
-
---         --if (reset = '1') then
---         --  clock_polarity <= '0';
-
---         if (rising_edge(clk)) then
---             --if (currstate /= rst) then
---             if (reset = '1') then
---                 clock_polarity <= '0';
---             else if (sclk_counter = sclk_modif - 1) then
---                 clock_polarity <= (clock_polarity xor '1');
---                 sclk_counter := 0;
-
---             else sclk_counter := sclk_counter + 1;
---             end if;
---         end if;
---         --else clock_polarity <= '0';
---         --end if;
-
---     elsif (falling_edge(clk)) then
---         --if (currstate /= rst) then
---         if (sclk_counter = sclk_modif - 1) then
---             clock_polarity <= (clock_polarity xor '1');
---             sclk_counter      := 0;
---         else sclk_counter := sclK_counter + 1;
---         end if;
---     end if;
-
---     --end if;
--- end process;
-
--- process (clock_polarity)
-process (clk)
-
-begin
+process (clk, reset) begin
 
     if (reset = '1') then
         currstate <= rst;

@@ -422,17 +422,17 @@ module cpu(clk, reset, data_in, data_valid, data_out, addr_out, write_en, mem_re
   wire write_en;
   output [12:0] x1;
   wire [12:0] x1;
-  assign _11_ = control_flags_out[3] ? imm : rs2;
-  assign _12_ = control_flags_out[4] ? { 16'h0000, pc_inc } : _13_;
-  assign _13_ = control_flags_out[0] ? data_in : rdalu;
-  assign _14_ = control_flags_out[4] ? rdalu[16] : 1'h0;
-  assign _15_ = control_flags_out[4] ? rdalu[17] : 1'h1;
-  assign _18_ = control_flags_out[6] ? rs1[15:0] : imm[15:0];
   assign _19_ = control_flags_out[5] ? pc_out[15:2] : rdalu[13:0];
-  assign _20_ = fetchflag ? data_in : iword_reg;
+  assign _20_ = fetchflag ? { data_in[7:0], data_in[15:8], data_in[23:16], data_in[31:24] } : iword_reg;
   always @(posedge clk, posedge reset)
     if (reset) _21_ <= 32'd0;
     else _21_ <= _20_;
+  assign _11_ = control_flags_out[3] ? imm : rs2;
+  assign _12_ = control_flags_out[4] ? { 16'h0000, pc_inc } : _13_;
+  assign _13_ = control_flags_out[0] ? { data_in[7:0], data_in[15:8], data_in[23:16], data_in[31:24] } : rdalu;
+  assign _14_ = control_flags_out[4] ? rdalu[16] : 1'h0;
+  assign _15_ = control_flags_out[4] ? rdalu[17] : 1'h1;
+  assign _18_ = control_flags_out[6] ? rs1[15:0] : imm[15:0];
   alu alu_inst (
     .a(rs1),
     .b(b),
@@ -494,7 +494,7 @@ module cpu(clk, reset, data_in, data_valid, data_out, addr_out, write_en, mem_re
   assign pc_inc = _16_;
   assign pc_out = _17_;
   assign pc_offset = _18_;
-  assign data_out = rs2;
+  assign data_out = { rs2[7:0], rs2[15:8], rs2[23:16], rs2[31:24] };
   assign addr_out = _19_;
   assign write_en = memflag;
   assign mem_req = _10_;
@@ -537,23 +537,23 @@ module instructioncounter(clk, reset, pcflag, s0, s1, pc_offset, pc_inc, pc_new)
   assign _03_ = \reg  + 16'h0004;
   assign _04_ = s1s0 == 2'h2;
   assign _05_ = s1s0 == 2'h1;
-  function [15:0] \1383 ;
+  function [15:0] \1404 ;
     input [15:0] a;
     input [47:0] b;
     input [2:0] s;
     (* parallel_case *)
     casez (s)
       3'b??1:
-        \1383  = b[15:0];
+        \1404  = b[15:0];
       3'b?1?:
-        \1383  = b[31:16];
+        \1404  = b[31:16];
       3'b1??:
-        \1383  = b[47:32];
+        \1404  = b[47:32];
       default:
-        \1383  = a;
+        \1404  = a;
     endcase
   endfunction
-  assign _06_ = \1383 (16'h0000, { pc_offset, _03_, _01_ }, { _05_, _04_, _02_ });
+  assign _06_ = \1404 (16'h0000, { pc_offset, _03_, _01_ }, { _05_, _04_, _02_ });
   assign _07_ = pcflag ? _06_ : \reg ;
   assign _08_ = reset ? 16'h0000 : _07_;
   always @(posedge clk)
@@ -1441,6 +1441,9 @@ module spi_master(clk, mode_select, reset, miso, cs, data_in, addr, sclk, mosi, 
   assign _311_ = read_adress_counter[1] ? _057_ : _027_;
   assign _313_ = read_adress_counter[3] ? _058_ : _028_;
   assign _314_ = read_adress_counter[3] ? _059_ : _029_;
+  assign _290_ = currstate == 3'h0;
+  assign _301_ = ~ cs;
+  assign _312_ = _301_ ? mode_select : 1'h0;
   assign _316_ = _301_ ? 3'h1 : currstate;
   assign _317_ = currstate == 3'h1;
   assign _318_ = write_adress_counter == 32'd16;
@@ -1737,9 +1740,6 @@ module spi_master(clk, mode_select, reset, miso, cs, data_in, addr, sclk, mosi, 
   assign _291_ = _258_ ? miso : data_reg[31];
   assign _303_ = read_adress_counter[4] ? _302_ : _300_;
   assign _315_ = read_adress_counter[4] ? _314_ : _313_;
-  assign _290_ = currstate == 3'h0;
-  assign _301_ = ~ cs;
-  assign _312_ = _301_ ? mode_select : 1'h0;
   assign data_reg = _066_;
   assign mode_select_zw = _070_;
   assign write_adress_counter = _073_;
