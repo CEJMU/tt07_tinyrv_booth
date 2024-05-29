@@ -1020,7 +1020,7 @@ module spi_master(clk, mode_select, reset, miso, cs, data_in, addr, sclk, mosi, 
   reg [31:0] _073_ = 32'd16;
   wire _074_;
   wire [31:0] _075_;
-  reg [31:0] _076_ = 32'd34;
+  reg [31:0] _076_ = 32'd33;
   reg [2:0] _077_;
   wire _078_;
   wire _079_;

@@ -38,7 +38,7 @@ architecture rtl of spi_master is
     signal mode_select_zw : std_logic;
 
     signal write_adress_counter : integer := 16;
-    signal read_adress_counter  : integer := 34;
+    signal read_adress_counter  : integer := 33;
 
     type states is (rst, send_adress, write_data, read_data, data);
     signal currstate : states;
