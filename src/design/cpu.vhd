@@ -47,6 +47,7 @@ architecture rtl of cpu is
   signal memflag   : std_logic := '0';
   signal pcflag    : std_logic := '0';
   signal fetchflag : std_logic := '0';
+  signal mul_bit_zw   : std_logic := '0';
 
   signal instruction : std_logic_vector(16 downto 0);
   signal iword_reg   : std_logic_vector(31 downto 0);
@@ -98,7 +99,8 @@ begin
       a           => rs1,
       b           => b,
       instruction => instruction,
-      rd          => rdAlu
+      rd          => rdAlu,
+      mul_bit     => mul_bit_zw
       );
 
   control_inst : entity work.control(rtl)
@@ -113,7 +115,8 @@ begin
       memflag           => memflag,
       pcflag            => pcflag,
       fetchflag         => fetchflag,
-      mem_req           => mem_req
+      mem_req           => mem_req,
+      mul_bit           => mul_bit_zw
       );
 
   write_en <= memflag;

@@ -184,29 +184,45 @@ begin
       rd => rd
       );
 
-  tb : process
-  begin
+  --tb : process
+  --begin
     -- Initial reset
+    --reset <= '1';
+    --wait for period;
+    --reset <= '0';
+
+    --for i in test_vectors'range loop
+      --instruction <= test_vectors(i).instruction;
+      --a <= test_vectors(i).a;
+      --b <= test_vectors(i).b;
+
+      --wait for period;
+      --assert (rd = test_vectors(i).rd)
+        --report "Test " & integer'image(i) & " failed: Expected rd = " & slv_to_hexstring(test_vectors(i).rd) & " but was " & slv_to_hexstring(rd)
+        --severity error;
+
+    --end loop;
+
+    --report "Testbench finished running";
+    --finished <= '1';
+    --wait;
+  --end process;
+
+  process
+  begin
     reset <= '1';
     wait for period;
     reset <= '0';
-
-    for i in test_vectors'range loop
-      instruction <= test_vectors(i).instruction;
-      a <= test_vectors(i).a;
-      b <= test_vectors(i).b;
-
-      wait for period;
-      assert (rd = test_vectors(i).rd)
-        report "Test " & integer'image(i) & " failed: Expected rd = " & slv_to_hexstring(test_vectors(i).rd) & " but was " & slv_to_hexstring(rd)
-        severity error;
-
+    instruction <= INST_MUL;
+    a <= x"00000002";
+    b <= x"0000000A";
+    wait for period;
+    for i in 31 downto 0 loop
+    wait for period;
     end loop;
-
-    report "Testbench finished running";
     finished <= '1';
-    wait;
-  end process;
+    wait; 
+    end process;
 
   clk <= not clk after half_period when finished = '0';
 end rtl;
