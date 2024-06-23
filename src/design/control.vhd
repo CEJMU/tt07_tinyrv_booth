@@ -7,6 +7,7 @@ entity control is
   port(
     clk   : in std_logic;
     reset : in std_logic;
+    mul_bit : in std_logic;
 
     iword             : in  std_logic_vector(31 downto 0);
     data_valid        : in  std_logic;
@@ -75,6 +76,9 @@ begin
 
       elsif(currstate = execute and (mem_phase = '0')) then
         currstate <= writeback;
+
+      elsif(currstate = execute and mul_bit = '1')then
+        currstate <= execute;
 
       elsif currstate = memory then
         if data_valid = '1' then
