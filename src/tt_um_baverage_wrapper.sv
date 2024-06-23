@@ -14,6 +14,10 @@ module tt_um_baverage_wrapper (
    logic [1:0]         x;
    assign x = ui_in[1:0];
 
+   assign uo_out[7:1] = 7'b0;
+   assign uio_out[7:1] = 7'b0;
+   assign uio_oe[7:1] = 7'b0;
+
     typedef enum {z0,z50,z100,z150} mystate;
     mystate state_d ; // Neuer Zustand
     (* fsm_encoding = "binary" *)
