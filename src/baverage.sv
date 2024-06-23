@@ -1,4 +1,4 @@
-module tt_um_baverage (
+module baverage (
         input logic [1:0] x,
         input logic clk,
         input logic rst,
