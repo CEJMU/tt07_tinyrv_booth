@@ -12,7 +12,7 @@ module tt_um_baverage_wrapper (
    logic               y;
    assign uo_out[0] = y;
    logic [1:0]         x;
-   assign ui_in[1:0] = x;
+   assign x = ui_in[1:0];
 
     typedef enum {z0,z50,z100,z150} mystate;
     mystate state_d ; // Neuer Zustand
